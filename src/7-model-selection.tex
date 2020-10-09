@@ -1,0 +1,69 @@
+It is of interest to evaluate the forecasting capability of the aforementioned CAR model since the gage observations, in and of themselves, are time series data, and forecasting realtime and future flood events might be helpful for early warning systems and emergency management.
+We compare out-of-sample predictions for the first week of 2017 with the ground truth and calculate the mean squared error and the mean absolute error as metrics since such calculations can be applied to any type of models as long as the response variables are continuous.
+\hl{Note that the rainfall and gage height data are measured simultaneously, so that the rainfall at a particular time is used to predict or explain the flooding at the same time. We have found that the time lag between the rainfall cause and the flooding consequence is minimal.  However, note that in practice, the use of this model for real-time forecasting of flooding would require some projections of rainfall into the future. The use of the model for retrospective explanatory purposes after the flooding was observed would not require such projections, of course.}
+
+In addition, we consider several other models to compare with the CAR model: specifically, the general linear regression model, and two members of a popular family of classification and regression methods:  random forest and boosting trees.
+ Comparing the linear model with CAR highlights the necessity of including a proximity matrix since a customized covariance structure is the major difference.
+ Random forest and boosting trees, two popular machine learning algorithms, predict the patterns in data by combining the outputs of individual trees and can give decent benchmarks of model performance.
+ Random forest and boosting trees are both tree-based algorithms and entropy is used as the loss function, but the random forest works in parallel while adaptive boosting works sequentially.
+ Specifically, a random forest obtains results by taking the average of each decision tree prediction, while adaptive boosting builds decision trees iteratively, and the weight of each observation is adjusted until convergence. \\
+
+\hl{The random forest method (Breiman, 2001) and boosting trees (Friedman, 2001) are chosen as benchmark models since they are routinely used in water sciences.
+For example, the random forest regression model is demonstrated to be effective in unsaturated hydraulic conductivity and superior to the M5 tree model (Sihag, 2015).
+A random forest approach is also applied in forecasting the spatial distribution of sediment pollution and detecting its predictors (Walsh, 2017).
+Tyralis (2019) provided a thorough overview of recent papers which involve the study of hydrology and random forest applications, whose themes include rainfall runoff model, streamflow forecasting and  drought prediction.}\\
+
+For a fair comparison, all three models include the same seven covariates as the CAR model: precipitation, seasonality variables and all related interaction terms.
+It is worth noting that the spatial information is handled differently between the CAR model and the other benchmark models.
+Rather than defining a covariance matrix based on the basin information, we include the water basin indicator as a  categorical variable.
+The mean squared error (MSE) and the mean absolute error (MAE) are reported in Table~\ref{com_model_fit}.
+As seen in Table~\ref{com_model_fit}, the CAR model outperforms the benchmark models by a considerable margin.
+\hl{In general, the CAR model is better at exploiting the spatial dependency while the random forest algorithm makes better use of covariates.
+Therefore the large difference between the two models in MAE and MSE can be explained by the small number of covariates.}
+This notion can be \hl{further} substantiated by examining the feature importance of the random forest and boosting trees (feature importance  is  measured by the amount of entropy reduced after a variable is added to the full model), since these two models assign almost negligible importance to the watershed variables (Table~\ref{com_model_fit_trees}).
+ On the other hand, consistent with the CAR model, the benchmark models such as the random forest recognize  precipitation as a major contributor to the flood  height (with a feature importance value of 0.6720 based on random forest, 0.4686 based on boosting trees).
+
+\begin{table*}[htbp]
+\caption{The comparison of the out-of-sample predictions.}
+\centering
+\begin{tabular}{|c|l|l|}
+\hline
+Model &  MAE &   MSE \\ \hline
+CAR model & 0.3077 &0.2903  \\ \hline
+Linear Model &1.2638 &3.0411 \\ \hline
+Random Forest &1.3041 & 3.4282  \\ \hline
+Boosting Trees &1.5557 &4.3659 \\ \hline
+\end{tabular}
+\label{com_model_fit}
+\end{table*}
+
+\begin{table*}[htbp]
+\caption{A comparison of feature importances for random forest model  and boosting trees.}
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+Watershed &  Random Forest &   Boosting Trees \\ \hline
+Santee & 0.0229  & 0.1751\\ \hline
+Lower Pee Dee & 0.0327 & 0.0133\\ \hline
+Savannah  &0.0439   &0.0245\\ \hline
+Edisto SC Coastal  &0.0042 &0.0441 \\ \hline
+\end{tabular}
+\label{com_model_fit_trees}
+\end{table*}
+
+\hl{To validate the conclusion, we also compute the MSE based on leave-one-out (LOO) cross-validation based on locations.
+We use LOO rather than traditional K-fold cross-validation to avoid the computational burden of partitioning the data (locations) repeatedly and fitting the model on every partition.
+Vehtari et al. (2016) introduced an efficient computation of LOO from MCMC samples,
+which uses Pareto-smoothed importance sampling (PSIS) to provide an estimate
+of point-wise out-of-sample prediction accuracy.
+The CAR model, in this experiment, gives an MSE of 0.32, which outperforms linear model (1.12), random forest (1.32) and boosting
+trees (1.66), consistent with outcome of the one-week forecast task.}
+
+
+
+
+
+
+
+
+

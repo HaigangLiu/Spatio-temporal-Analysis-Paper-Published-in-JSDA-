@@ -1,0 +1,131 @@
+\documentclass{svjour3}
+\usepackage[latin1]{inputenc}
+\usepackage{soul}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{url}
+
+%\there was a highlighted version provided for reviewers
+%\the line below is to diable highlight
+\renewcommand\hl[1]{#1}
+
+\begin{document}
+\title{Spatio-temporal Analysis of Flood Data from South Carolina}
+
+\author{Haigang Liu* \and
+        David B.\ Hitchcock \and 
+        S.\ Zahra Samadi 
+}
+\institute{Haigang Liu, Corresponding author \at
+		   Department of Statistics,  University of South Carolina\\
+		   1523 Greene St, Columbia, SC 29201 \\
+           \email{haigang@email.sc.edu}         
+           \and
+           David B.\ Hitchcock \at
+           Department of Statistics,  University of South Carolina\\
+		   1523 Greene St, Columbia, SC 29201 \\
+\email{hitchcock@stat.sc.edu} 
+           \and
+           S.\ Zahra Samadi \at
+           Department of Civil and Environmental Engineering, University of South Carolina\\
+           301 Main St, Columbia, SC 29208\\
+           \email{samadi@cec.sc.edu}   }
+
+\date{Received: date / Accepted: date}
+% The correct dates will be entered by the editor
+
+\maketitle
+\begin{abstract}
+
+\hl{
+To investigate the relationship between flood gage height and precipitation in South Carolina from 2012 to 2016, we built a conditional autoregressive (CAR) model using a Bayesian hierarchical framework.
+This approach allows the modelling of the main spatio-temporal properties of water height dynamics over multiple locations, accounting for the effect of river network, geomorphology, and forcing rainfall.
+In this respect, a proximity matrix based on watershed information was used to capture the spatial structure of gage height measurements in and around South Carolina.
+The temporal structure was handled by a first-order autoregressive term in the model.
+Several covariates, including the elevation of the sites and effects of seasonality, were examined, along with daily rainfall amount.
+A non-normal error structure was used to account for the heavy-tailed distribution of maximum gage heights.
+The proposed model captured some key features of the flood process such as seasonality and a stronger association between precipitation and flooding during summer season.
+The model is able to forecast short term flood gage height which is crucial for informed emergency decision.
+As a byproduct, we also developed a Python library to retrieve and handle environmental data provided by some main agencies in the United States.
+This library can be of general usefulness for studies requiring rainfall, flow, and geomorphological information over specific areas of the conterminous US.\
+}
+
+\keywords{Flood \and Watershed \and CAR model \and Spatiotemporal Analysis}
+\end{abstract}
+\newpage
+
+\begin{center}
+	\textbf{DECLARATION}
+\end{center}
+
+\section*{1. Availability of data and materials}
+The datasets used and/or analyzed during the current study are available from the corresponding author upon request.
+\section*{2. Competing Interests}
+The authors declare that they have no competing interests.
+\section*{3. Funding}
+Not applicable
+\section*{4. Authors' contributions}
+HL analyzed scraped and prepared the data for this research and coded the model implementation and was a major contributor in writing the manuscript.
+DH contributed to the methodology for statistical modeling and model validation and was also a contributor in writing.
+S provided valuable domain knowledge in hydrology modeling, which helped other authors understand the data source, and is also reflected in areas such as variable selection.
+
+\section*{5. Acknowledgements}
+We are grateful for the insightful comments and suggestions of two reviewers, which have greatly improved the article.
+
+
+\newpage
+
+\section*{List of abbreviations}
+\textbf{ACF}: Autocorrelation Function \\
+\textbf{AWS}: Amazon Web Services \\
+\textbf{CAR}: Conditional Autoregressive (Model) \\
+\textbf{CONUS}: Contiguous United States \\
+\textbf{COO}: Coordinate List \\
+\textbf{CSR}: Compressed Sparse Row \\
+\textbf{DOK}: Dictionary of Keys \\
+\textbf{HUC}: Hydrologic Unit \\ 
+\textbf{MAE}: Mean Absolute Error \\
+\textbf{MCMC}: Markov Chain Monte Carlo \\ 
+\textbf{MSE}: Mean Squared Error \\ 
+\textbf{NOAA}: National Oceanic and Atmospheric Administration\\
+\textbf{NWS}: National Weather Service \\ 
+\textbf{PACF}: Partial Autocorrelation Function \\
+\textbf{RF}: Random Forest \\ 
+\textbf{SRTM}: Shuttle Radar Topography Mission \\
+\textbf{SST}: Sea Surface Temperature  \\
+
+\newpage
+\section{Introduction}\label{sec:intro}
+\input{1-introduction.tex}
+
+\section{Data Sources}\label{sec:source}
+\input{2-data_sources.tex}
+
+\section{Adjacency Matrix and Watershed}\label{sec:watershed}
+\input{3-adjacency-matrix-and-watershed.tex}
+
+\section{Model Description}\label{sec:model}
+\input{4-model-description.tex}
+
+\section{Model Fitting}\label{sec:model_fitting}
+\input{5-model-fitting.tex}
+
+\section{Model Diagnosis}\label{sec:diag}
+\input{6-model-diagnosis.tex}
+
+\section{Model Comparison}\label{sec:model_comp}
+\input{7-model-selection.tex}
+
+\section{Discussion}\label{sec:discussion}
+\input{8-discussion.tex}
+
+\appendix
+\section{Appendix}\label{sec:appendix}
+\input{appendix}
+\end{document}
+

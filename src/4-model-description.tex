@@ -1,0 +1,36 @@
+
+A neighborhood structure to reflect the spatial structure is pivotal in some spatial and spatiotemporal analyses.
+Often, one can define the neighborhood structure based on distance from certain centroids or similarity of an auxiliary variable (Cressie, 1993).
+In our study, watershed information is used  to construct the neighborhood structure since it outlines the domain of hydrological water movement activity, and we define  measured stations within the same basin as neighbors. \\
+
+The observed variables in our study include $ Y_i$, the gage height, and $ p$ explanatory variables, $ \mathbf x_i = (x_{i1}, \ldots, x_{ip})$.
+In order to compute the shifting patterns in flood records, this research incorporated exogenous covariates such as precipitation, dummy variables for spring, summer and fall, as well as the interactions between the seasonality dummy variables and precipitation into the Conditional Autoregressive (CAR) model.
+In addition,  the elevation of each location was considered as a covariate but not included in the final model, as noted in Section~\ref{subsec:reported_result}.
+The Conditional Autoregressive  model for the responses, $\mathbf Y = (Y_1, \ldots, Y_n )'$ , is formulated by specifying the set of full conditional distributions satisfying a form of autoregression given by
+
+\begin{align*}
+y_i|\mathbf Y_{(i)} \sim N \left( \mathbf x_i^{'}\boldsymbol{\beta} + \sum_{j=1, j\neq i}^n c_{ij}(Y_j - \mathbf x_j^{'} \boldsymbol{\beta}), \sigma_i^2\right), \quad i = 1, \ldots, n,
+\end{align*}
+
+\noindent where $\mathbf Y_{(i)} = \{ Y_{j}, j \neq i\}$, and  $\boldsymbol{\beta} = (\beta_1, \ldots, \beta_p)^{'}$  are unknown regression parameters. Also, $ \sigma_i^2 > 0$ and $ c_{ij}$ are covariance parameters with $ c_{ii} = 0$ for all $ i$.
+It should be noted that
+ the values of the CAR parameter estimates should reflect reasonable physical mechanisms to guarantee that the patterns observed in the period of record are not just effects of fluctuations of runoff processes whose dynamics evolve over longer time scales (e.g., Koutsoyiannis, 2011;
+ Koutsoyiannis and Montanari, 2014). \\
+
+Banerjee et al.\ (2014) demonstrate that one can derive the joint distribution based on full conditional distribution for $ \mathbf Y $ with Brook's Lemma.
+The joint distribution of $ \mathbf Y$ is given as $\mathbf Y \sim N_n(\mathbf X\boldsymbol{\beta}, \, (\mathbf I_n -\mathbf C)^{-1}\mathbf M)$, where  $\mathbf M = \text{diag}(\sigma_{1}^2, \ldots, \sigma^2_{n})$ and the elements of  $\mathbf C = \{ c_{ij} \}$.
+Note that Brook's Lemma requires $\mathbf M^{-1}(\mathbf I_n - \mathbf C)$ to be  positive definite and $\mathbf M^{-1}\mathbf C$ symmetric, which means $ c_{ij}\sigma_j^2 = c_{ji}\sigma_i^2$ for $ i, j = 1, \ldots, n$. \\
+
+We further simplify this model by assuming $\mathbf M = \sigma^2 \mathbf I_n$, with $ \sigma^2 > 0$  and unknown and $\mathbf C = \alpha \mathbf W$.
+The parameter $ \alpha$ can be interpreted as the unknown ``spatial parameter'' and $\mathbf W = (w_{ij})$ is a known ``weight'' matrix, which satisfies $ w_{ij} =1$ if and only if sites $ i$ and $ j$ are neighbors. Oliveira (2010) establishes  that setting up the model with these two assumptions automatically satisfies the two aforementioned assumptions (symmetric and positive definite). Hence, the joint distribution of $ \mathbf Y$ is further reduced to $ \mathbf Y \sim \text{N}_n(\mathbf  X\boldsymbol{\beta} , \ \sigma^2 (\mathbf I -  \rho \mathbf W)^{-1})$.
+Note that taking advantage of the fact that $ \mathbf I - \rho \mathbf W$ is a sparse matrix can further accelerate the MCMC sampling.
+See the Appendix for more on this.\\
+
+
+Note that this presentation of the model assumes the random error (or systematic fluctuations in model dynamics;
+see Clark et al., 2015)  follows a normal distribution, an assumption that should be checked when analyzing a real data set;
+if this normality assumption is violated, a different error distribution could be specified (e.g., Samadi et al., 2018).
+  In our analysis in Sections~\ref{sec:model_fitting} and~\ref{sec:diag}, the residuals indicated a heavy-tailed pattern, and we considered a Laplace error specification, but ended up using a t distribution for the error distribution that proved to be proficient for South Carolina's rainfall-runoff processes (see Samadi et al., 2018).
+   Otherwise, the CAR model outlined in this section was used with our analysis.\\
+
+Additionally, we define the priors in a relatively non-informative way. Specifically,   $ \boldsymbol{\beta}_p \sim N_p(\mathbf 0, 10^6\cdot \mathbf  I)$, $ \rho \sim U(0, 1)$ and $ \sigma^2 \sim \text{InvGamma}(0.001, 0.001)$.
